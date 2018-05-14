@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -16,36 +16,40 @@ export class AppComponent {
     ],
     selectedLogins: { },
   };
-  queryParams = { };
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router) {
-    this.activatedRoute.queryParams.subscribe((params: Params) => {
-      console.log(params);
-      this.queryParams = params;
-      this.parseQueryParams();
+    this.activatedRoute.queryParamMap.subscribe(queryParams => {
+      this.parseQueryParams(queryParams);
     });
   }
 
-  parseQueryParams() {
-    if (this.queryParams['hideLogins'] === 'None') {
+  parseQueryParams(params: ParamMap) {
+    console.log('parseQueryParams()...');
+    let showLogins = params.get('showLogins');
+    if (showLogins === 'All') {
+      console.log('parseQueryParams: found all');
       this.selectAll();
     }
-    else if (this.queryParams['hideLogins'] === 'All') {
+    else if (showLogins === 'None') {
+      console.log('parseQueryParams: found none');
       this.selectNone();
     }
+    else {
+      console.log('parseQueryParams: default: found all');
+      this.onAll();
+    }
+    console.log('parseQueryParams() done');
   }
 
   onAll() {
     this.selectAll();
-    this.queryParams = {...this.queryParams, hideLogins: 'None'};
-    this.router.navigate(['dashboard'], { queryParams: this.queryParams });
+    this.router.navigate(['/dashboard'], { queryParams: { showLogins: 'All'}, queryParamsHandling: 'merge' });
   }
 
   onNone() {
     this.selectNone();
-    this.queryParams = {...this.queryParams, hideLogins: 'All'};
-    this.router.navigate(['dashboard'], { queryParams: this.queryParams });
+    this.router.navigate(['/dashboard'], { queryParams: { showLogins: 'None'}, queryParamsHandling: 'merge' });
   }
 
   selectAll() {
