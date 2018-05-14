@@ -25,21 +25,16 @@ export class AppComponent {
   }
 
   parseQueryParams(params: ParamMap) {
-    console.log('parseQueryParams()...');
     let showLogins = params.get('showLogins');
     if (showLogins === 'All') {
-      console.log('parseQueryParams: found all');
       this.selectAll();
     }
     else if (showLogins === 'None') {
-      console.log('parseQueryParams: found none');
       this.selectNone();
     }
     else {
-      console.log('parseQueryParams: default: found all');
       this.onAll();
     }
-    console.log('parseQueryParams() done');
   }
 
   onAll() {
