@@ -27,6 +27,7 @@ export class AppComponent {
   }
 
   parseQueryParams(params: ParamMap) {
+    console.log('parseQueryParams:');
     let showLogins = params.get('showLogins');
     if (showLogins === null) {
       //this.onAll();
