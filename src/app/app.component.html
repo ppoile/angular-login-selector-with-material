@@ -5,7 +5,9 @@
     <section class="example-section">
       <button mat-raised-button (click)="onAll()">All</button>
       <button mat-raised-button (click)="onNone()">None</button>
-      <mat-checkbox *ngFor="let login of model.allLogins" class="example-margin" [(ngModel)]="model.selectedLogins[login]">{{login}}</mat-checkbox>
+      <mat-button-toggle-group multiple (change)="onGroupChange($event)">
+        <mat-button-toggle *ngFor="let login of model.allLogins" [checked]="model.selectedLogins[login]" value="{{login}}">{{login}}</mat-button-toggle>
+      </mat-button-toggle-group>
     </section>
     <pre>{{model | json}}</pre>
   </mat-card-content>
