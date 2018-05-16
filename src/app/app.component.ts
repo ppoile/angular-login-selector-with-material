@@ -10,15 +10,23 @@ export class AppComponent {
   title = 'app';
   model = {
     allLogins: [
+      'Dover',
       'London',
       'London Kraftwerk',
-      'Dover',
     ],
     selectedLogins: { },
   };
+  showNoLoginsAsString = '';
+  showAllLoginsAsString: string;
+  showLoginsDefaultAsString: string;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router) {
+
+    this.model.allLogins.sort();
+    this.showAllLoginsAsString = this.model.allLogins.join(',');
+    this.showLoginsDefaultAsString = this.showAllLoginsAsString;
+
     this.activatedRoute.queryParamMap.subscribe(queryParams => {
       console.log('activatedRoute.queryParamMap:');
       console.log(queryParams);
@@ -30,82 +38,54 @@ export class AppComponent {
     console.log('parseQueryParams:');
     let showLogins = params.get('showLogins');
     if (showLogins === null) {
-      //this.onAll();
+      showLogins = this.showLoginsDefaultAsString;
     }
     else if (showLogins === 'All') {
-      this.selectAll();
+      showLogins = this.showAllLoginsAsString;
     }
-    else if (showLogins === '') {
-      this.selectNone();
-    }
-    else {
-      this.selectNone();
-      for (let login of showLogins.split(',')) {
-        console.log(`selecting '${login}'...`);
-        this.model.selectedLogins[login] = true;
-      }
-    }
-  }
-
-  onAll() {
-    this.updateShowLoginsParameter(this.model.allLogins.join(','));
-  }
-
-  onNone() {
-    this.updateShowLoginsParameter('');
-  }
-
-  onToggle(login, event) {
-    console.log(`onToggle(${login}, ${event})...`);
-    this.model.selectedLogins[login] = event;
-    this.evalLoginString();
-  }
-
-  updateShowLoginsParameter(value) {
-    let extras: NavigationExtras = {
-      relativeTo: this.activatedRoute,
-      queryParams: { showLogins: value },
-      queryParamsHandling: 'merge',
-    };
-    this.router.navigate(['dashboard'], extras);
-  }
-
-  evalLoginString() {
-        let logins = []
-        for (let login in this.model.selectedLogins) {
-            console.log(`login '${login}' is ${this.model.selectedLogins[login]}`);
-            if (this.model.selectedLogins[login]) {
-                logins.push(login);
-            }
-        }
-        let loginsString = logins.join(',')
-        console.log(`logins: '${loginsString}'`);
-    }
-
-  selectAll() {
-    console.log('selecting all');
-    for (var login of this.model.allLogins) {
+    this.selectNone();
+    for (let login of showLogins.split(',')) {
+      if (login === '')
+        continue;
       this.model.selectedLogins[login] = true;
     }
   }
 
   selectNone() {
     console.log('selecting none');
-    for (var login of this.model.allLogins) {
+    for (let login of this.model.allLogins) {
       this.model.selectedLogins[login] = false;
     }
   }
-  onToggleChange(login, event) {
-    this.model.selectedLogins[login] = event.source._checked;
-    console.log('onToggleChange:');
-    console.log(login);
-    console.log(event);
+
+  onAll() {
+    console.log('onAll:');
+    this.updateShowLoginsParameter(this.showAllLoginsAsString);
+  }
+
+  onNone() {
+    console.log('onNone:')
+    this.updateShowLoginsParameter(this.showNoLoginsAsString);
   }
 
   onGroupChange(event) {
     console.log('onGroupChange:');
-    let showLoginsAsString = event.value.join(',');
+    let showLoginsAsString = event.value.sort().join(',');
     console.log(`showLogins='${showLoginsAsString}'`);
     this.updateShowLoginsParameter(showLoginsAsString);
+  }
+
+  updateShowLoginsParameter(value) {
+    console.log('updateShowLoginsParameter:')
+    console.log(value)
+    if (value === this.showLoginsDefaultAsString) {
+      value = null;
+    }
+    let extras: NavigationExtras = {
+      relativeTo: this.activatedRoute,
+      queryParams: { showLogins: value },
+      queryParamsHandling: 'merge',
+    };
+    this.router.navigate(['dashboard'], extras);
   }
 }
