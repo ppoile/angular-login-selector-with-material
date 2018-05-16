@@ -38,17 +38,17 @@ export class AppComponent {
 
   parseQueryParams(params: ParamMap) {
     console.log('parseQueryParams:');
-    let showLogins = params.get('showLogins');
-    if (showLogins === null) {
-      showLogins = this.showDefaultLoginsAsString;
+    let showLoginsAsString = params.get('showLogins');
+    if (showLoginsAsString === null) {
+      showLoginsAsString = this.showDefaultLoginsAsString;
     }
-    else if (showLogins === 'All') {
-      showLogins = this.showAllLoginsAsString;
+    else if (showLoginsAsString === 'All') {
+      showLoginsAsString = this.showAllLoginsAsString;
     }
-    this.showLoginsAsString = showLogins;
+    this.showLoginsAsString = showLoginsAsString;
     this.evalShowLoginSelection();
     this.selectNone();
-    for (let login of showLogins.split(',')) {
+    for (let login of showLoginsAsString.split(',')) {
       if (login === '')
         continue;
       this.model.selectedLogins[login] = true;
@@ -79,17 +79,17 @@ export class AppComponent {
     this.updateShowLoginsParameter(showLoginsAsString);
   }
 
-  updateShowLoginsParameter(value) {
+  updateShowLoginsParameter(showLoginsAsString) {
     console.log('updateShowLoginsParameter:')
-    console.log(value)
-    this.showLoginsAsString = value;
+    console.log(showLoginsAsString)
+    this.showLoginsAsString = showLoginsAsString;
     this.evalShowLoginSelection();
-    if (value === this.showDefaultLoginsAsString) {
-      value = null;
+    if (showLoginsAsString === this.showDefaultLoginsAsString) {
+      showLoginsAsString = null;
     }
     let extras: NavigationExtras = {
       relativeTo: this.activatedRoute,
-      queryParams: { showLogins: value },
+      queryParams: { showLogins: showLoginsAsString },
       queryParamsHandling: 'merge',
     };
     this.router.navigate(['dashboard'], extras);
