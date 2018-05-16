@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 
@@ -28,6 +29,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatButtonToggleModule,
     MatCardModule,
     MatCheckboxModule,
+    MatExpansionModule,
     MatInputModule,
     MatRadioModule,
   ],

@@ -1,14 +1,21 @@
 <router-outlet></router-outlet>
 <mat-card>
   <mat-card-content>
-    <h2 class="example-h2">Login selection</h2>
-    <section class="example-section">
-      <button mat-raised-button (click)="onAll()">All</button>
-      <button mat-raised-button (click)="onNone()">None</button>
-      <mat-button-toggle-group multiple (change)="onGroupChange($event)">
-        <mat-button-toggle *ngFor="let login of model.allLogins" [checked]="model.selectedLogins[login]" value="{{login}}">{{login}}</mat-button-toggle>
-      </mat-button-toggle-group>
-    </section>
-    <pre>{{model | json}}</pre>
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Login selection: {{model.selection}}</mat-panel-title>
+          <mat-panel-description>Choose your logins</mat-panel-description>
+        </mat-expansion-panel-header>
+        <section class="example-section">
+          <button mat-raised-button (click)="onAll()">All</button>
+          <button mat-raised-button (click)="onNone()">None</button>
+          <mat-button-toggle-group multiple (change)="onGroupChange($event)">
+            <mat-button-toggle *ngFor="let login of model.allLogins" [checked]="model.selectedLogins[login]" value="{{login}}">{{login}}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </section>
+        <pre>{{model | json}}</pre>
+      </mat-expansion-panel>
+    </mat-accordion>
   </mat-card-content>
 </mat-card>
