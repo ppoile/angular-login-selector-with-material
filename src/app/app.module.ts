@@ -16,6 +16,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
+  bootstrap: [
+    AppComponent,
+  ],
   declarations: [
     AppComponent,
     DashboardComponent,
@@ -34,8 +37,5 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatRadioModule,
   ],
   providers: [],
-  bootstrap: [
-    AppComponent,
-  ],
 })
 export class AppModule { }
