@@ -7,8 +7,9 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('router-outlet should contain no text', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    expect(page.getRouterOutletText()).toEqual('');
+    expect(page.getTtt()).toContain('Logins:\n (All)\nChoose your logins');
   });
 });

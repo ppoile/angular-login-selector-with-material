@@ -5,7 +5,11 @@ export class AppPage {
     return browser.get('/');
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getRouterOutletText() {
+    return element(by.css('app-root router-outlet')).getText();
+  }
+
+  getTtt() {
+    return element(by.css('app-root mat-card')).getText();
   }
 }
