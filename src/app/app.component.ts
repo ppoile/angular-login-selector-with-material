@@ -44,8 +44,6 @@ export class AppComponent {
     } else if (showLoginsAsString === 'All') {
       showLoginsAsString = this.showAllLoginsAsString;
     }
-    this.showLoginsAsString = showLoginsAsString;
-    this.evalShowLoginSelection();
     this.selectNone();
     for (const login of showLoginsAsString.split(',')) {
       if (login === '') {
@@ -54,10 +52,12 @@ export class AppComponent {
       console.log(`selecting '${login}'`);
       this.model.selectedLogins[login] = true;
     }
+    this.showLoginsAsString = showLoginsAsString;
+    this.evalShowLoginSelection();
   }
 
   selectNone() {
-    console.log('selecting none');
+    console.log('deselecting all');
     for (const login of this.model.allLogins) {
       this.model.selectedLogins[login] = false;
     }
@@ -76,15 +76,12 @@ export class AppComponent {
   onGroupChange(event) {
     console.log('onGroupChange:');
     const showLoginsAsString = event.value.sort().join(',');
-    console.log(`showLogins='${showLoginsAsString}'`);
     this.updateShowLoginsParameter(showLoginsAsString);
   }
 
   updateShowLoginsParameter(showLoginsAsString) {
     console.log('updateShowLoginsParameter:');
-    console.log(showLoginsAsString);
-    this.showLoginsAsString = showLoginsAsString;
-    this.evalShowLoginSelection();
+    console.log(`showLogins='${showLoginsAsString}'`);
     if (showLoginsAsString === this.showDefaultLoginsAsString) {
       showLoginsAsString = null;
     }
@@ -115,28 +112,20 @@ export class AppComponent {
     const numSelected = this.showLoginsAsString.split(',').length;
     const numDeselected = numAll - numSelected;
     if (numDeselected < numSelected) {
-      return '<strike>' + this.getDeselectedLogins().join(',') + '</strike>';
+      return '<strike>' + this.getDeselectedLoginsAsString() + '</strike>';
     } else {
       return this.showLoginsAsString;
     }
   }
 
-  getDeselectedLogins() {
+  getDeselectedLoginsAsString() {
     console.log('getDeselectedLogins:');
-    console.log(this.model);
-    console.log(this.model.selectedLogins);
-    console.log(this.model.selectedLogins['Dover']);
     const deselectedLogins = [];
     for (const login of this.model.allLogins) {
-      console.log(login);
-      console.log(this.model.selectedLogins[login]);
       if (!this.model.selectedLogins[login]) {
-        console.log(`'${login}' deselected`);
         deselectedLogins.push(login);
-      } else {
-        console.log(`'${login}' selected`);
       }
     }
-    return deselectedLogins;
+    return deselectedLogins.join(',');
   }
 }
